@@ -72,7 +72,7 @@ public class Utilities {
     //SLUGS
     private static final Pattern MONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
-    private static final Pattern EDGESDHASHES = Pattern.compile("[\"(^-|-$)\"]");
+    private static final Pattern EDGESDHASHES = Pattern.compile("(^-|-$)");
 
     public static String getSlug(String input){
         String noWhiteSpace = WHITESPACE.matcher(input).replaceAll("-");

@@ -3,9 +3,14 @@ package com.ejemplo.apirest.ejemplo_apirest.utilities;
 import java.io.File;
 import java.io.IOException;
 import java.text.Normalizer;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Utilities {
@@ -67,7 +72,7 @@ public class Utilities {
     //SLUGS
     private static final Pattern MONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
-    private static final Pattern EDGESDHASHES = Pattern.compile("[(^|-$)]");
+    private static final Pattern EDGESDHASHES = Pattern.compile("[\"(^-|-$)\"]");
 
     public static String getSlug(String input){
         String noWhiteSpace = WHITESPACE.matcher(input).replaceAll("-");
@@ -75,6 +80,24 @@ public class Utilities {
         String slug = MONLATIN.matcher(normalized).replaceAll("");
         slug = EDGESDHASHES.matcher(slug).replaceAll("");
         return slug.toLowerCase(Locale.ENGLISH);
+    }
+
+    public static ResponseEntity<Object> generateResponse(HttpStatus status, String message){
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            map.put("fecha", new Date());
+            map.put("estado", status.value());
+            map.put("mensaje", message);
+
+            return new ResponseEntity<Object>(map, status);
+        } catch (Exception e) {
+            // TODO: handle exception
+            map.put("fecha", new Date());
+            map.put("estado", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            map.put("mensaje", e.getMessage());
+
+            return new ResponseEntity<Object>(map, status);
+        }
     }
 
 }

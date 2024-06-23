@@ -18,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ejemplo.apirest.ejemplo_apirest.Models.CategoriaModel;
 import com.ejemplo.apirest.ejemplo_apirest.Models.ProductoModel;
+import com.ejemplo.apirest.ejemplo_apirest.Models.UsuarioModel;
 import com.ejemplo.apirest.ejemplo_apirest.Services.CategoriaService;
 import com.ejemplo.apirest.ejemplo_apirest.Services.ProductoService;
+import com.ejemplo.apirest.ejemplo_apirest.Services.UsuarioService;
 import com.ejemplo.apirest.ejemplo_apirest.utilities.Constants;
 import com.ejemplo.apirest.ejemplo_apirest.utilities.Utilities;
 
@@ -131,5 +133,14 @@ public class BdController {
             // TODO: handle exception
             return Utilities.generateResponse(HttpStatus.BAD_REQUEST, "Falló eliminar el registro, intente más tarde");
         }
+    }
+
+    // PRODUCTS
+    @Autowired
+    private UsuarioService usuarioService;
+    
+        @GetMapping("/usuarios/{correo}")
+        public UsuarioModel usuarioByEmail(@PathVariable("correo") String correo){
+        return this.usuarioService.searchByEmail(correo);
     }
 }
